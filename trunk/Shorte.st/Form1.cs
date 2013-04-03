@@ -36,9 +36,9 @@ namespace Shorte.st
         {
             InitializeComponent();
             this.FormClosing += new FormClosingEventHandler(this.Form1_FormClosing);
-            if(!RegisterHotKey(this.Handle, 0, (int)KeyModifier.Shift, Keys.G.GetHashCode()))
+            if (!RegisterHotKey(this.Handle, 0, (int)KeyModifier.Shift + (int)KeyModifier.Control, Keys.D.GetHashCode()))
                 throw new InvalidOperationException("Couldn’t register the hot key.");
-            if(!RegisterHotKey(this.Handle, 1, (int)KeyModifier.Shift, Keys.H.GetHashCode()))
+            if (!RegisterHotKey(this.Handle, 1, (int)KeyModifier.Shift + (int)KeyModifier.Control, Keys.F.GetHashCode()))
                 throw new InvalidOperationException("Couldn’t register the hot key.");
         }
 
@@ -61,11 +61,12 @@ namespace Shorte.st
                 int id = m.WParam.ToInt32();                                        // The id of the hotkey that was pressed.
                 Console.WriteLine(key);
                 keyPressed = key.ToString();
-                if (keyPressed.Equals("G"))
+                if (keyPressed.Equals("D"))
                 {
                     this.Show();
+                    textBox1.SelectAll();
                 }
-                else if (keyPressed.Equals("H"))
+                else if (keyPressed.Equals("F"))
                 {
                     getUrl();
                 }
@@ -110,7 +111,7 @@ namespace Shorte.st
 
         private void getUrl()
         {
-            if ((keyPressed != null ) && (keyPressed.Equals("H")))
+            if ((keyPressed != null ) && (keyPressed.Equals("F")))
             {
                 url = Clipboard.GetText();
             }
@@ -121,7 +122,7 @@ namespace Shorte.st
             //hide form on enter
             this.Hide();
             //CHECK FOR PROTOCOL
-            if (!(!(url).Contains("http://") || !(url).Contains("https://") || !(url).Contains("ftp://")))
+            if (!(url).Contains("http://") && !(url).Contains("https://"))
             {
                 url = "http://" + url;
             }
