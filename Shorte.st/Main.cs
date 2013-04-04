@@ -35,7 +35,7 @@ namespace Shorte.st
         public Shortest()
         {
             InitializeComponent();
-            this.FormClosing += new FormClosingEventHandler(this.Form1_FormClosing);
+            this.FormClosing += new FormClosingEventHandler(this.Main_FormClosing);
             if (!RegisterHotKey(this.Handle, 0, (int)KeyModifier.Shift + (int)KeyModifier.Control, Keys.D.GetHashCode()))
                 throw new InvalidOperationException("Couldn’t register the hot key.");
             if (!RegisterHotKey(this.Handle, 1, (int)KeyModifier.Shift + (int)KeyModifier.Control, Keys.F.GetHashCode()))
@@ -45,9 +45,14 @@ namespace Shorte.st
         private void Shortest_Load(object sender, EventArgs e)
         {
             notifyIcon1.Visible = true;
-            trayMenu = new ContextMenu();
+            ContextMenu trayMenu = new ContextMenu();
+            MenuItem trayMenuItem1 = new MenuItem();
+            trayMenuItem1.Text = "About";
+            trayMenu.MenuItems.Add(trayMenuItem1);
+            trayMenu.MenuItems.Add("-");
             trayMenu.MenuItems.Add("Exit", OnExit);
             notifyIcon1.ContextMenu = trayMenu;
+            trayMenuItem1.Click += (senders, ex) => this.formSwitch(sender, e, "about");
         }
 
         protected override void WndProc(ref Message m)
@@ -73,7 +78,7 @@ namespace Shorte.st
             }
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (closeForm == true)
             {
@@ -148,5 +153,18 @@ namespace Shorte.st
 
             }
         }
+
+        private void formSwitch(object senders, EventArgs ex, string form)
+        {
+            if (form.Equals("about"))
+            {
+                About aboutForm = new About();
+                if (!Application.OpenForms.OfType<About>().Any())
+                {
+                    aboutForm.Show();
+                }
+            }
+        }
+
     }
 }
