@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.Json;
+using System.Web;
 
 namespace Shorte.st
 {
@@ -131,6 +132,8 @@ namespace Shorte.st
             {
                 url = "http://" + url;
             }
+            //ENCODE URL
+            url = HttpUtility.UrlEncode(url);
             //get JSON response from bit.ly
             WebClient webClient = new WebClient();
             dynamic response = webClient.DownloadString("https://api-ssl.bitly.com/v3/shorten?access_token=39e9d629f1a1f71864ab23cd91c44a89278a25b5&longUrl=" + url);
